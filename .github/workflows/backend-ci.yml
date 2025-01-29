@@ -1,17 +1,19 @@
-name: CI/CD API
+name: Backend CI/CD
 
 on:
-  pull_request:
-    branches:
-      - '**'
   push:
+    paths:
+      - "backend/**"
     branches:
-      - development
       - main
+      - development
+  pull_request:
+    paths:
+      - "backend/**"
 
 jobs:
-  lint-build-test:
-    name: Lint, Build e Testes
+  build-test-deploy:
+    name: Build, Test & Deploy Backend
     runs-on: ubuntu-latest
 
     steps:
@@ -22,18 +24,20 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20.11.0
-          cache: 'npm'
+          cache: "npm"
 
       - name: Instalar dependências
+        working-directory: backend
         run: npm install
 
-      - name: Rodando ESLint
+      - name: Rodar ESLint
+        working-directory: backend
         run: npm run lint
 
       - name: Compilando TypeScript
+        working-directory: backend
         run: tsc
 
       - name: Gerando documentação com TSOA
+        working-directory: backend
         run: npm run doc:generate
-
-  
