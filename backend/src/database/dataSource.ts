@@ -11,4 +11,4 @@ const options: DataSourceOptions = {
   logging: false,
 };
 
-export const AppDataSource: DataSource = new DataSource(options);
+export const appDataSource: DataSource = new DataSource(options);

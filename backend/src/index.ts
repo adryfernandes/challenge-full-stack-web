@@ -7,7 +7,7 @@ import { serve, setup } from 'swagger-ui-express';
 
 import swaggerDocument from '../public/swagger.json';
 
-import { AppDataSource } from './database/dataSource';
+import { appDataSource } from './database/dataSource';
 import { errorHandlerMiddleware } from './middleware/errorHandlerMiddleware';
 import router from './router';
 
@@ -16,7 +16,7 @@ const PORT = parseInt(process?.env?.PORT) || 3000;
 
 const init = async (): Promise<void> => {
   try {
-    await AppDataSource.initialize();
+    await appDataSource.initialize();
 
     const app: Express = express();
     app.use(cors());
