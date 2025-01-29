@@ -1,0 +1,118 @@
+{
+  "settings": {
+    "import/resolver": { 
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    },
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    }
+  },
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier/prettier",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "overrides": [],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "tsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "import"
+  ],
+  "rules": {
+    "camelcase": ["error", { "properties": "never" }],
+    "spaced-comment": "error",
+    "consistent-return": 2,
+    "no-else-return": 1,
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "array-callback-return": "error",
+    "eqeqeq": ["error", "always"],
+    "logical-assignment-operators": ["error", "always"],
+    "no-await-in-loop": 1,
+    "curly": ["error", "all"],
+    "constructor-super": "error",
+    "getter-return": "error",
+    "no-constant-condition": "error",
+    "no-constant-binary-expression": "error",
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "any",
+        "ignoreReadBeforeAssign": false
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "semi": true,
+        "endOfLine": "auto"
+      }
+    ],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
+    "import/no-named-as-default-member": "off",
+    "import/no-duplicates": ["error", {"considerQueryString": true}],
+    "import/order": [
+      "error",
+      {
+        "pathGroups": [
+          {
+            "pattern": "src/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "@/types/**",
+            "group": "type",
+            "position": "after"
+          },
+          {
+            "pattern": "@/types",
+            "group": "type",
+            "position": "after"
+          },
+          {
+            "pattern": "@/interfaces/**",
+            "group": "type",
+            "position": "after"
+          },
+          {
+            "pattern": "@/interfaces",
+            "group": "type",
+            "position": "after"
+          }
+        ],
+        "newlines-between": "always",
+        "alphabetize": { "order": "asc" }
+      }
+    ]
+  }
+}

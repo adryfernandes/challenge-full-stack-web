@@ -1,0 +1,39 @@
+name: CI/CD API
+
+on:
+  pull_request:
+    branches:
+      - '**'
+  push:
+    branches:
+      - development
+      - main
+
+jobs:
+  lint-build-test:
+    name: Lint, Build e Testes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.11.0
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Rodando ESLint
+        run: npm run lint
+
+      - name: Compilando TypeScript
+        run: tsc
+
+      - name: Gerando documentação com TSOA
+        run: npm run doc:generate
+
+  

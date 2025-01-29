@@ -1,0 +1,11 @@
+.idea/
+node_modules/
+build/
+tmp/
+temp/
+
+*.log
+package-lock.json
+yarn.lock
+
+.env.local
