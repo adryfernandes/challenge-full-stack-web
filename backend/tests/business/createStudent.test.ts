@@ -6,8 +6,6 @@ import { CreateStudentBusiness } from '@/business/student/CreateStudentBusiness'
 import { StudentEntity } from '@/database/entities';
 import { StudentRepository } from '@/database/repositories';
 
-import type { StudentRequest } from '@/interfaces';
-
 describe('Testing CreateStudentBusiness', () => {
   const fieldsToTest = [
     { field: 'name', message: 'O nome do aluno é obrigatório.' },
@@ -18,12 +16,7 @@ describe('Testing CreateStudentBusiness', () => {
 
   fieldsToTest.forEach(({ field, message }) => {
     it(`should throw an error if ${field} is null`, async () => {
-      const request: StudentRequest = {
-        name: studentMock.name,
-        document: studentMock.document,
-        registration: studentMock.registration,
-        email: studentMock.email,
-      };
+      const request = { ...studentMock };
 
       request[field] = null;
 
@@ -32,12 +25,7 @@ describe('Testing CreateStudentBusiness', () => {
   });
 
   it(`should throw an error if document is not valid`, async () => {
-    const request: StudentRequest = {
-      name: studentMock.name,
-      document: '12345678912',
-      registration: studentMock.registration,
-      email: studentMock.email,
-    };
+    const request = { ...studentMock, document: '12345678912' };
 
     await expect(new CreateStudentBusiness().execute(request)).rejects.toThrow(
       'O documento informado está inválido.'
@@ -45,45 +33,24 @@ describe('Testing CreateStudentBusiness', () => {
   });
 
   it(`should throw an error if document is duplicated`, async () => {
-    const request: StudentRequest = {
-      name: studentMock.name,
-      document: studentMock.document,
-      registration: studentMock.registration,
-      email: studentMock.email,
-    };
-
     const repository = new StudentRepository();
     repository.exists = jest.fn().mockResolvedValueOnce(true);
 
-    await expect(new CreateStudentBusiness(repository).execute(request)).rejects.toThrow(
+    await expect(new CreateStudentBusiness(repository).execute(studentMock)).rejects.toThrow(
       'O documento informado já está cadastrado.'
     );
   });
 
   it(`should throw an error if email is duplicated`, async () => {
-    const request: StudentRequest = {
-      name: studentMock.name,
-      document: studentMock.document,
-      registration: studentMock.registration,
-      email: studentMock.email,
-    };
-
     const repository = new StudentRepository();
     repository.exists = jest.fn().mockResolvedValueOnce(false).mockResolvedValueOnce(true);
 
-    await expect(new CreateStudentBusiness(repository).execute(request)).rejects.toThrow(
+    await expect(new CreateStudentBusiness(repository).execute(studentMock)).rejects.toThrow(
       'O e-mail informado já está cadastrado.'
     );
   });
 
   it(`should throw an error if registration is duplicated`, async () => {
-    const request: StudentRequest = {
-      name: studentMock.name,
-      document: studentMock.document,
-      registration: studentMock.registration,
-      email: studentMock.email,
-    };
-
     const repository = new StudentRepository();
     repository.exists = jest
       .fn()
@@ -91,22 +58,15 @@ describe('Testing CreateStudentBusiness', () => {
       .mockResolvedValueOnce(false)
       .mockResolvedValueOnce(true);
 
-    await expect(new CreateStudentBusiness(repository).execute(request)).rejects.toThrow(
+    await expect(new CreateStudentBusiness(repository).execute(studentMock)).rejects.toThrow(
       'O registro do aluno informado já está cadastrado.'
     );
   });
 
   it('save student', async () => {
-    const request: StudentRequest = {
-      name: studentMock.name,
-      document: studentMock.document,
-      registration: studentMock.registration,
-      email: studentMock.email,
-    };
+    const studentSaved = await new CreateStudentBusiness().execute(studentMock);
 
-    const studentSaved = await new CreateStudentBusiness().execute(request);
-
-    const student = new StudentEntity(request);
+    const student = new StudentEntity(studentMock);
     expect(studentSaved).toEqual(
       expect.objectContaining({
         uuid: expect.any(String),
