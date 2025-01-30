@@ -1,64 +1,55 @@
 import type {
-  FindOptionsOrder,
-  FindOptionsRelations,
-  FindOptionsSelect,
-  FindOptionsWhere,
+  DeepPartial,
+  EntityTarget,
+  FindManyOptions,
+  FindOneOptions,
+  Repository,
+  UpdateResult,
 } from 'typeorm';
+import type { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
 import { appDataSource } from '../dataSource';
 
 export class BaseRepository<Entity> {
-  public readonly repository = null;
+  public readonly repository: Repository<Entity> = null;
 
-  constructor(private entityClass) {
+  constructor(private entityClass: EntityTarget<Entity>) {
     this.repository = appDataSource.getRepository(this.entityClass);
   }
 
-  async save(entity: Partial<Entity>): Promise<Entity> {
+  async findByUUID(uuid: string, options?: FindOneOptions<Entity>): Promise<Entity> {
+    if (!uuid) {
+      return null;
+    }
+
+    options = { where: {}, ...options };
+
+    options.where['uuid'] = uuid;
+
+    return await this.repository.findOne(options);
+  }
+
+  async find(options?: FindManyOptions<Entity>): Promise<Entity[]> {
+    return await this.repository.find(options);
+  }
+
+  async findOne(options: FindOneOptions<Entity>): Promise<Entity> {
+    return await this.repository.findOne(options);
+  }
+
+  async exists(options?: FindManyOptions<Entity>): Promise<boolean> {
+    return await this.repository.exists(options);
+  }
+
+  async save(entity: DeepPartial<Entity>): Promise<Entity> {
     return await this.repository.save(entity);
   }
 
-  async findByUUID(
-    uuid: string,
-    relations?: FindOptionsRelations<Entity>,
-    select?: FindOptionsSelect<Entity>
-  ): Promise<Entity> {
-    return await this.repository.findOne({
-      where: { uuid },
-      relations,
-      select,
-    });
-  }
-
-  async find(
-    where?: FindOptionsWhere<Entity>,
-    relations?: FindOptionsRelations<Entity>
-  ): Promise<Entity[]> {
-    return await this.repository.find({
-      where,
-      relations,
-    });
-  }
-
-  async findOne(
-    where?: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[],
-    relations?: FindOptionsRelations<Entity>,
-    order?: FindOptionsOrder<Entity>,
-    select?: FindOptionsSelect<Entity>
-  ): Promise<Entity> {
-    return await this.repository.findOne({
-      select,
-      where,
-      relations,
-      order,
-    });
-  }
-
-  async list(
-    where?: FindOptionsWhere<Entity>,
-    relations?: FindOptionsRelations<Entity>
-  ): Promise<Entity[]> {
-    return await this.repository.find({ where, relations });
+  async update(
+    fieldsChange: string | string[],
+    entity: QueryDeepPartialEntity<Entity>
+  ): Promise<UpdateResult> {
+    return await this.repository.update(fieldsChange, entity);
   }
 
   async delete(uuidEntity: string): Promise<void> {
