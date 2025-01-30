@@ -1,8 +1,10 @@
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Timestamp } from './extendings/Timestamp';
 
 import { onlyNumbers } from '@/utils';
+import { IsCPF } from '@/utils/validators/isDocumentValid';
 
 import type { StudentParams } from '@/interfaces';
 
@@ -12,15 +14,22 @@ export class StudentEntity {
   uuid: string;
 
   @Column()
+  @MinLength(5, { message: 'O nome deve ter no mínimo 5 caracteres.' })
+  @IsNotEmpty({ message: 'O nome do aluno é obrigatório.' })
   name: string;
 
-  @Column()
-  email: string;
-
   @Column({ length: 11 })
+  @IsCPF({ message: 'O documento informado está inválido.' })
+  @IsNotEmpty({ message: 'O documento do aluno é obrigatório.' })
   document: string;
 
   @Column()
+  @IsEmail(undefined, { message: 'O e-mail fornecido não é válido.' })
+  @IsNotEmpty({ message: 'O e-mail do aluno é obrigatório.' })
+  email: string;
+
+  @Column()
+  @IsNotEmpty({ message: 'O registro do aluno (RA) é obrigatório.' })
   registration: string;
 
   @Column(() => Timestamp, { prefix: false })

@@ -1,2 +1,2 @@
-export * from './entitiesParamsInterface';
+export * from './studentInterfaces';
 export * from './errorInterface';

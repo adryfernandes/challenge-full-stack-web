@@ -5,7 +5,7 @@ import { DataSource } from 'typeorm';
 
 const options: DataSourceOptions = {
   type: 'sqlite',
-  database: './database.sqlite',
+  database: ':memory:',
   entities: [`${__dirname}/**/entities/*.{ts,js}`],
   synchronize: true,
   logging: false,
