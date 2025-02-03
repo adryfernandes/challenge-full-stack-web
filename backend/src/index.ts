@@ -1,4 +1,3 @@
-import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { config } from 'dotenv';
 import type { Express } from 'express';
@@ -19,11 +18,12 @@ const init = async (): Promise<void> => {
     await appDataSource.initialize();
 
     const app: Express = express();
+    app.use(express.json());
     app.use(cors());
-    app.use(cookieParser());
 
     app.use('/api', router);
     app.use('/docs', serve, setup(swaggerDocument));
+
     app.use(errorHandlerMiddleware);
 
     app.listen(PORT, () => {

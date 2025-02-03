@@ -1,0 +1,345 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"StudentResponse": {
+				"properties": {
+					"uuid": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"document": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"registration": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"deletedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"uuid",
+					"name",
+					"document",
+					"email",
+					"registration",
+					"createdAt",
+					"updatedAt",
+					"deletedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"HttpStatusCode": {
+				"enum": [
+					100,
+					101,
+					102,
+					103,
+					200,
+					201,
+					202,
+					203,
+					204,
+					205,
+					206,
+					207,
+					208,
+					226,
+					300,
+					301,
+					302,
+					303,
+					304,
+					305,
+					306,
+					307,
+					308,
+					400,
+					401,
+					402,
+					403,
+					404,
+					405,
+					406,
+					407,
+					408,
+					409,
+					410,
+					411,
+					412,
+					413,
+					414,
+					415,
+					416,
+					417,
+					418,
+					421,
+					422,
+					423,
+					424,
+					425,
+					426,
+					428,
+					429,
+					431,
+					451,
+					500,
+					501,
+					502,
+					503,
+					504,
+					505,
+					506,
+					507,
+					508,
+					510,
+					511
+				],
+				"type": "number"
+			},
+			"ValidateError": {
+				"description": "Classe customizada para erros 400 ( Bad Request )\r\n\r\nSeu construtor possui:\r\n     message: Mensagem mostrado no erro\r\n     trace: Código de erro para restreio ao debuggar\r\n     stack: Caminho do erro ( opcional )",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"statusCode": {
+						"$ref": "#/components/schemas/HttpStatusCode"
+					},
+					"trace": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"message",
+					"trace"
+				],
+				"type": "object",
+				"additionalProperties": false,
+				"example": {
+					"message": "Campo é obrigatório.",
+					"trace": "EXP9999",
+					"stack": null
+				}
+			},
+			"NotFoundError": {
+				"description": "Classe customizada para erros 404 ( Not Found )\r\n *\r\nSeu construtor possui:\r\n     message: Mensagem mostrado no erro\r\n     trace: Código de erro para restreio ao debuggar\r\n     stack: Caminho do erro ( opcional )",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"statusCode": {
+						"$ref": "#/components/schemas/HttpStatusCode"
+					},
+					"trace": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"message",
+					"trace"
+				],
+				"type": "object",
+				"additionalProperties": false,
+				"example": {
+					"message": "Item não encontrado.",
+					"trace": "EXP9999",
+					"stack": null
+				}
+			},
+			"ExceptionError": {
+				"description": "Classe customizada para erros 500 ( Exceptions )\r\nSua mensagem é sempre a mesma\r\n\r\nSeu construtor possui:\r\n     trace: Código de erro para restreio ao debuggar\r\n     stack: Caminho do erro",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					},
+					"statusCode": {
+						"$ref": "#/components/schemas/HttpStatusCode"
+					},
+					"trace": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"message",
+					"trace"
+				],
+				"type": "object",
+				"additionalProperties": false,
+				"example": {
+					"message": "Erro inesperado, por favor entre em contato com o suporte.",
+					"trace": "EXP9999",
+					"stack": null
+				}
+			},
+			"StudentRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"document": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"registration": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"document",
+					"email",
+					"registration"
+				],
+				"type": "object",
+				"additionalProperties": false,
+				"example": {
+					"name": "ANA LUIZA SILVA",
+					"document": "72983030407",
+					"email": "ANA_123@EMAIL.COM",
+					"registration": "123455"
+				}
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "painel-grupo-a",
+		"version": "1.0.0",
+		"description": "Painel administrativo do Grupo A",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {
+			"name": "Adryane Fernandes"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/student/create": {
+			"post": {
+				"operationId": "createStudent",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/StudentResponse"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"uuid": "d686b743-a90b-49da-b45d-b28c8a8b8ea4",
+											"name": "ANA LUIZA SILVA",
+											"document": "72983030407",
+											"email": "ANA_123@EMAIL.COM",
+											"registration": "123455",
+											"createdAt": "2025-02-03T03:00:00.000Z",
+											"updatedAt": "2025-02-03T03:00:00.000Z",
+											"deletedAt": "2025-02-03T03:00:00.000Z"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateError"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundError"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ExceptionError"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Estudante"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/StudentRequest"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "http://localhost:4000/api/v1",
+			"description": "Local development"
+		}
+	]
+}

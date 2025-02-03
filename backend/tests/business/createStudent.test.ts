@@ -71,11 +71,9 @@ describe('Testing CreateStudentBusiness', () => {
       expect.objectContaining({
         uuid: expect.any(String),
         ...student,
-        timestamp: expect.objectContaining({
-          createdAt: expect.any(Date),
-          updatedAt: expect.any(Date),
-          deletedAt: null,
-        }),
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date),
+        deletedAt: null,
       })
     );
   });

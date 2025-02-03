@@ -26,7 +26,6 @@ const mapErrorToResponse = (err: ControlledErrors | Error) => {
     err instanceof ValidateError ||
     err instanceof NotFoundError ||
     err instanceof UnauthorizedError ||
-    err instanceof ConflictError ||
     err instanceof ForbiddenError ||
     err instanceof ExceptionError
   ) {

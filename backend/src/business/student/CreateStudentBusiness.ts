@@ -1,14 +1,28 @@
+import { HttpStatusCode } from 'axios';
+import { Body, Example, OperationId, Post, Response, Route, SuccessResponse, Tags } from 'tsoa';
+
 import { StudentEntity } from '@/database/entities';
 import { StudentRepository } from '@/database/repositories';
 import { EntityValidate } from '@/database/validate/EntityValidate';
+import type { ExceptionError, NotFoundError } from '@/errors';
 import { ValidateError } from '@/errors';
+import { studentExample } from '@/swagger/studentExample';
 
-import type { StudentRequest } from '@/interfaces';
+import type { StudentRequest, StudentResponse } from '@/interfaces';
 
+@Route('student')
 export class CreateStudentBusiness {
   constructor(private studentRepository = new StudentRepository()) {}
 
-  async execute(request: StudentRequest): Promise<StudentEntity> {
+  @Post('create')
+  @Tags('Estudante')
+  @OperationId('createStudent')
+  @Example<StudentResponse>(studentExample)
+  @SuccessResponse(HttpStatusCode.Created, 'Created')
+  @Response<ValidateError>(HttpStatusCode.BadRequest, 'Bad Request')
+  @Response<NotFoundError>(HttpStatusCode.NotFound, 'Not Found')
+  @Response<ExceptionError>(HttpStatusCode.InternalServerError, 'Internal Server Error')
+  async execute(@Body() request: StudentRequest): Promise<StudentResponse> {
     const student = new StudentEntity({
       name: request.name,
       document: request.document,
@@ -19,7 +33,8 @@ export class CreateStudentBusiness {
     await this.validateRequest(student);
     await this.validateUniqueInformations(student);
 
-    return this.studentRepository.save(student);
+    const savedStudent = await this.studentRepository.save(student);
+    return savedStudent.toOutput();
   }
 
   private async validateRequest(student: StudentEntity): Promise<void> {
@@ -73,3 +88,5 @@ export class CreateStudentBusiness {
     }
   }
 }
+
+export default new CreateStudentBusiness();

@@ -6,7 +6,7 @@ import { Timestamp } from './extendings/Timestamp';
 import { onlyNumbers } from '@/utils';
 import { IsCPF } from '@/utils/validators/isDocumentValid';
 
-import type { StudentParams } from '@/interfaces';
+import type { StudentParams, StudentResponse } from '@/interfaces';
 
 @Entity('Students')
 export class StudentEntity {
@@ -40,5 +40,18 @@ export class StudentEntity {
     this.document = onlyNumbers(document);
     this.email = email?.toUpperCase?.().trim?.();
     this.registration = registration?.toUpperCase?.().trim?.();
+  }
+
+  toOutput(): StudentResponse {
+    return {
+      uuid: this.uuid,
+      name: this.name,
+      document: this.document,
+      email: this.email,
+      registration: this.registration,
+      createdAt: this.timestamp?.createdAt,
+      updatedAt: this.timestamp?.updatedAt,
+      deletedAt: this.timestamp?.deletedAt,
+    };
   }
 }
